@@ -15,12 +15,14 @@ def encodeASCII(userInput):
     return userInput.encode("ascii","ignore")
 
 def getResponse():
-    #response = requests.get(url);
 
-    #global rData
+    '''
+    No code for featured as there are hardly 5-10 posts which are featured. So manually modified data.
+    '''
+
     rData=[]
 
-    for i in range(1,3):
+    for i in range(1,285):
         response = requests.get("https://api.stackexchange.com/2.2/questions?page="+str(i)+"&pagesize=50&order=desc&sort=creation&tagged=r&site=stats");
 
         temp = {}
@@ -57,6 +59,7 @@ def getResponse():
                 rData.append(temp)
                 temp = {}
     return rData
+
 #begin main
 
 target = open("data.json", 'w');
