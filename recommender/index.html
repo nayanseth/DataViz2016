@@ -10,7 +10,7 @@
     <link href="css/skeleton.css" rel="stylesheet" type="text/css"/>
 
     <!--JS-->
-
+    <script src="js/script.js"></script>
     <!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
 
   </head>
@@ -25,18 +25,18 @@
           <h3>Parameters</h3>
 
           <span>
-            <label>Votes</label>
-            <input class="u-full-width" type="range" id="votes">
+            <label id="votes-text">Votes</label>
+            <input class="u-full-width" type="range" id="votes" onclick="OnChange('votes-text');">
           </span>
 
           <span>
-            <label>Views</label>
-            <input class="u-full-width" type="range" id="views">
+            <label id="views-text">Views</label>
+            <input class="u-full-width" type="range" id="views" onclick="OnChange('views-text');">
           </span>
 
           <span>
-            <label>Answers</label>
-            <input class="u-full-width" type="range" id="answers">
+            <label id="answers-text">Answers</label>
+            <input class="u-full-width" type="range" id="answers" onclick="OnChange('answers-text');">
           </span>
 
           <span>
