@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Visual Recommender</title>
+
+    <!--CSS-->
+
+    <link href="css/normalize.css" rel="stylesheet" type="text/css"/>
+    <link href="css/skeleton.css" rel="stylesheet" type="text/css"/>
+
+    <!--JS-->
+
+    <!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
+
+  </head>
+  <body>
+
+    <div class="twelve columns">
+      <div class="container">
+        <input class="u-full-width" type="text" placeholder="Question Likho" id="question" style="margin-top:20px;">
+
+        <div class="four columns" style="margin-left:0;">
+
+          <h3>Parameters</h3>
+
+          <span>
+            <label>Votes</label>
+            <input class="u-full-width" type="range" id="votes">
+          </span>
+
+          <span>
+            <label>Views</label>
+            <input class="u-full-width" type="range" id="views">
+          </span>
+
+          <span>
+            <label>Answers</label>
+            <input class="u-full-width" type="range" id="answers">
+          </span>
+
+          <span>
+            <label>Tags</label>
+            <textarea class="u-full-width" placeholder="Tags..." id="tags"></textarea>
+          </span>
+
+        </div>
+
+        <div class="seven columns">
+          <h3>Recommended Posts</h3>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>
