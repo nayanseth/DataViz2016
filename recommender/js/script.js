@@ -3,6 +3,13 @@ numViews = 0, numVotes = 0, numAnswers = 0;
 var request;
 var data;
 
+function extractQuestion(){
+  var question=document.getElementById('question').value;
+  question=question.split(' ');
+  console.log(question);
+
+}
+
 function loadData(callback) {
 
   if(window.XMLHttpRequest) {
