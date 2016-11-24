@@ -63,8 +63,15 @@ function OnChange(id) {
 }
 
 function recommendPosts() {
-  var finalPosts;
 
+  /*
+  if(numViews == 0 || numVotes== 0 || numAnswers ==0) {
+    alert("Please specify parameters");
+    return;
+  }
+  */
+
+  var finalPosts;
   var parentNode = document.getElementById("recommendPosts");
   var child = document.getElementById("recommendedPosts");
 
@@ -80,14 +87,21 @@ function recommendPosts() {
     for(var i =0;i<data.length;i++) {
       var dataQuestion = data[i]["title"];
       for(var j=0;j<question.length;j++){
-        if(dataQuestion.includes(question[j])) {
-          console.log("yes");
+
+        if(question[j]=="r") {
+            question[j] = question[j].toUpperCase();
+        }
+
+        if(dataQuestion.includes(question[j]) && data[i]["views"]>=numViews && data[i]["votes"]>=numVotes /*&& data[i]["answers"]>=numAnswers*/) {
+          console.log(data[i]["tags"]);
+
           var p = document.createElement("p");
           div.appendChild(p);
 
           p.appendChild(document.createTextNode(dataQuestion));
 
         }
+        break;
       }
     }
   }
