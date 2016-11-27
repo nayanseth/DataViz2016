@@ -6,6 +6,9 @@ var request;
 var question = "";
 var data;
 
+var questionWords;
+var range;
+
 function loadData(callback) {
 
   if(window.XMLHttpRequest) {
@@ -15,21 +18,23 @@ function loadData(callback) {
   }
 
   request.open("GET","data/data.json");
-
   request.onreadystatechange = function () {
     if (request.readyState == 4 && request.status == "200") {
       // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
       callback(request.responseText);
     }
   };
+
   request.send(null);
+  
+
 }
 
 
 function extractQuestion(){
   question=document.getElementById('question').value;
   question=question.split(' ');
-
+    
   for(var i =0;i<question.length;i++) {
 
     for(var j =0;j<stopwords.length;j++) {
@@ -59,19 +64,20 @@ function OnChange(id) {
   }
 
   recommendPosts();
+}
+
+function modifyBar(id,min,max){
+    var minval = document.getElementById(id);
+    if(minval) {
+        minval.min = min;
+        minval.max = max;
+    }
 
 }
 
+
 function recommendPosts() {
-
-  /*
-  if(numViews == 0 || numVotes== 0 || numAnswers ==0) {
-    alert("Please specify parameters");
-    return;
-  }
-  */
-
-  var finalPosts;
+  var finalPosts=[];
   var parentNode = document.getElementById("recommendPosts");
   var child = document.getElementById("recommendedPosts");
 
@@ -84,33 +90,64 @@ function recommendPosts() {
   div.setAttribute("id","recommendedPosts");
 
   if(question) {
-    for(var i =0;i<data.length;i++) {
-      var dataQuestion = data[i]["title"];
-      for(var j=0;j<question.length;j++){
-
-        if(question[j]=="r") {
-            question[j] = question[j].toUpperCase();
+      for(var i=question.length;i>0;i--){
+        finalPosts = finalPosts.concat(filterQuestions(question,i));
+          console.log(finalPosts);
+        if(finalPosts.length>20){
+            break;
         }
-
-        if(dataQuestion.includes(question[j]) && data[i]["views"]>=numViews && data[i]["votes"]>=numVotes /*&& data[i]["answers"]>=numAnswers*/) {
-          console.log(data[i]["tags"]);
-
-          var p = document.createElement("p");
-          div.appendChild(p);
-
-          p.appendChild(document.createTextNode(dataQuestion));
-
-        }
-        break;
       }
+      finalPosts = finalPosts.splice(0,20);
+      
+      for(var i=0;i<finalPosts.length;i++){
+        if(finalPosts[i]['views']>=numViews && finalPosts[i]['votes']>=numVotes){
+            var p = document.createElement("p");
+            div.appendChild(p);
+            p.appendChild(document.createTextNode(i+" : "+finalPosts[i]["title"]));
+        } 
+      }
+      sortedPostsVotes = finalPosts.sort(function(a,b){
+        return b['votes']-a['votes'];
+    });
+      sortedPostsViews = finalPosts.sort(function(a,b){
+        return b['views']-a['views'];
+    });
+     
+      modifyBar("votes",sortedPostsVotes[sortedPostsVotes.length-1]['votes'],sortedPostsVotes[0]['votes']);
+      modifyBar("views",sortedPostsViews[sortedPostsViews.length-1]['views'],sortedPostsViews[0]['views']);
     }
-  }
 }
+
+
+
+function filterQuestions(questionWords,range){
+    var finalQuestion=[];
+    for(var i=0;i<data.length;i++){
+        var dataQuestion = data[i]["title"];
+        var count=0;
+        for(var j=0;j<questionWords.length;j++){
+            if(dataQuestion.includes(questionWords[j])){
+                count++;
+                if(count>=range){
+                    finalQuestion.push(data[i]);
+                }
+            }
+        }
+        
+    }
+    finalQuestion.sort(function(a,b){
+        return b['votes']-a['votes'];
+    });
+    
+    //console.log(finalQuestion);
+    return finalQuestion.splice(0,20);
+}
+
 
 function init() {
  loadData(function(response) {
-  // Parse JSON string into object
-    data = JSON.parse(response);
+  //Parse JSON string into object
+  data = JSON.parse(response);
  });
 }
 
