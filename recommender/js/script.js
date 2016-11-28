@@ -8,8 +8,6 @@ var data;
 
 var questionWords;
 var range;
-var map = {};
-var tagList=[];
 var tagDict={};
 
 function loadData(callback) {
@@ -96,7 +94,16 @@ function modifyBar(id,min,max){
 
 
 function recommendPosts() {
+  var map = {};
+  var tagList=[];
   var finalPosts=[];
+
+  var tagParentNode = document.getElementById("tag-canvas");
+  var tagChild = document.getElementById("svg-container");
+  if(tagChild){
+    tagParentNode.removeChild(tagChild);
+  }
+
   var parentNode = document.getElementById("recommendPosts");
   var child = document.getElementById("recommendedPosts");
 
@@ -130,16 +137,16 @@ function recommendPosts() {
                     map[finalPosts[i]['tags'][j]] = 1;
                 }
             }
-        
-        } 
+
+        }
       }
-      
+
       for(var key in map){
           var temp ={};
           temp["name"] = key;
           temp["count"] = map[key];
           tagList = tagList.concat(temp);
-          
+
       }
       tagDict["children"] = tagList;
       sortedPostsVotes = finalPosts.sort(function(a,b){
@@ -151,6 +158,7 @@ function recommendPosts() {
       modifyBar("votes",sortedPostsVotes[sortedPostsVotes.length-1]['votes'],sortedPostsVotes[0]['votes']);
       modifyBar("views",sortedPostsViews[sortedPostsViews.length-1]['views'],sortedPostsViews[0]['views']);
     }
+    tagsBubbleChart();
 }
 
 
@@ -174,6 +182,46 @@ function filterQuestions(questionWords,range){
         return b['votes']-a['votes'];
     });
     return finalQuestion.splice(0,20);
+}
+
+// D3 Tags Bubble Chart
+
+function tagsBubbleChart() {
+  var t = d3.transition().duration(750).ease(d3.easeLinear);
+  var color = d3.scaleOrdinal(d3.schemeCategory20);
+
+  var diameter = 600;
+  var color = d3.scaleOrdinal(d3.schemeCategory20);
+  var bubble = d3.pack(tagDict).size([diameter,diameter]).padding(1.5);
+
+  var canvas = d3.select("#tag-canvas");
+
+  var svgCanvas = canvas.append("svg").attr("width", diameter).attr("height", diameter).attr("id","svg-container");
+
+  var nodes = d3.hierarchy(tagDict).sum(function(d) {
+    return d.count;
+  }).sort(function(a, b) { return a.count - b.count; });
+
+  var node = svgCanvas.selectAll(".node").data(bubble(nodes).descendants()).enter().filter(function(d) {
+    return !d.children;
+  }).append("g").attr("class","node").attr("transform", function(d) {
+    return "translate("+d.x+","+d.y+")";
+  });
+
+  node.append("title").text(function(d) {
+    return "Tag: " + d.data.name + " ; Count: " + d.data.count;
+  });
+
+  node.append("circle").transition(t).attr("r", function(d) {
+    return d.r;
+  }).style("fill", function(d,i) {
+    return color(i);
+  });
+
+  node.append("text").style("text-anchor", "middle").text(function(d) {
+    return d.data.name;
+  });
+
 }
 
 

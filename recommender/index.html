@@ -8,20 +8,22 @@
 
     <link href="css/normalize.css" rel="stylesheet" type="text/css"/>
     <link href="css/skeleton.css" rel="stylesheet" type="text/css"/>
+    <link href="css/style.css" rel="stylesheet" type="text/css"/>
     <link type="text/css" rel="stylesheet" href="qtip/jquery.qtip.css" />
 
 
     <!--JS-->
     <script src="js/script.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
     <!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
   </head>
   <body>
 
-    <div class="twelve columns" style="margin:10px">
+    <div class="twelve columns" style="margin:10px" id="container">
       <input class="ten columns" type="text" placeholder="Question Likho" id="question">
       <input class="button-primary two columns" type="submit" id="submit-button" value="SEARCH" onclick="extractQuestion();">
 
-      <div class="four columns" style="margin-left:0;">
+      <div class="five columns" style="margin-left:0;">
 
         <h3>Parameters</h3>
 
@@ -44,12 +46,13 @@
 
         <span>
           <label>Tags</label>
-          <textarea class="u-full-width" placeholder="Tags..." id="tags"></textarea>
+          <div id="tag-canvas" class="tags">
+          </div>
         </span>
 
       </div>
 
-      <div class="eight columns" id ="recommendPosts">
+      <div class="seven columns" id ="recommendPosts">
         <h3>Recommended Posts &#128077;</h3>
 
       </div>
@@ -61,6 +64,20 @@
     <!-- Include either the minifed or production version, NOT both!! -->
     <script type="text/javascript" src="qtip/jquery.qtip.js"></script>
     <script src="js/tooltip.js"></script>
+    <script>
+    var input = $('#input-range');
 
+input.bind('input', function(){
+	getRangeValue(input);
+}).bind('change', function(){
+	getRangeValue(input);	/* for IE */
+});
+
+function getRangeValue(e){
+	var value = $(e).val();
+	$('.value').text(value);
+	$('.range').attr('data-value', value);
+	input.attr('value', value);
+}</script>
   </body>
 </html>
