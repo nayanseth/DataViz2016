@@ -19,26 +19,28 @@
 
     <div class="twelve columns" style="margin:10px">
       <input class="ten columns" type="text" placeholder="Question Likho" id="question">
-      <input class="button-primary two columns" type="submit" value="SEARCH" onclick="extractQuestion();">
+      <input class="button-primary two columns" type="submit" id="submit-button" value="SEARCH" onclick="extractQuestion();">
 
       <div class="four columns" style="margin-left:0;">
 
         <h3>Parameters</h3>
 
-        <span>
-          <label id="votes-text">Votes</label>
-          <input class="u-full-width" type="range" min="0" max="290" id="votes" onclick="OnChange('votes-text');">
-        </span>
+        <form id="parameters">
+          <span>
+            <label id="votes-text">Votes</label>
+            <input class="u-full-width" type="range" min="0" max="290" id="votes" onclick="OnChange('votes-text');" disabled="disabled">
+          </span>
 
-        <span>
-          <label id="views-text">Views</label>
-          <input class="u-full-width" type="range" min="0" max="264668" step="100" id="views" onclick="OnChange('views-text');">
-        </span>
+          <span>
+            <label id="views-text">Views</label>
+            <input class="u-full-width" type="range" min="0" max="264668" step="100" id="views" onclick="OnChange('views-text');" disabled="disabled">
+          </span>
 
-        <span>
-          <label id="answers-text">Answers</label>
-          <input class="u-full-width" type="range" id="answers" min="0" max="26" onclick="OnChange('answers-text');">
-        </span>
+          <span>
+            <label id="answers-text">Answers</label>
+            <input class="u-full-width" type="range" id="answers" min="0" max="26" onclick="OnChange('answers-text');" disabled="disabled">
+          </span>
+        </form>
 
         <span>
           <label>Tags</label>
@@ -48,7 +50,7 @@
       </div>
 
       <div class="eight columns" id ="recommendPosts">
-        <h3>Recommended Posts</h3>
+        <h3>Recommended Posts &#128077;</h3>
 
       </div>
     </div>

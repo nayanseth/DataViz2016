@@ -26,15 +26,31 @@ function loadData(callback) {
   };
 
   request.send(null);
-  
+
+
+}
+
+function resetParameters() {
+  document.getElementById("votes-text").innerHTML = "Votes";
+  document.getElementById("views-text").innerHTML = "Views";
+  document.getElementById("answers-text").innerHTML = "Answers";
+  document.getElementById("parameters").reset();
+  document.getElementById("votes").removeAttribute("disabled");
+  document.getElementById("views").removeAttribute("disabled");
+  document.getElementById("answers").removeAttribute("disabled");
+
+  numViews = 0, numVotes = 0, numAnswers = 0;
 
 }
 
 
 function extractQuestion(){
+
+  resetParameters();
+
   question=document.getElementById('question').value;
   question=question.split(' ');
-    
+
   for(var i =0;i<question.length;i++) {
 
     for(var j =0;j<stopwords.length;j++) {
@@ -77,6 +93,7 @@ function modifyBar(id,min,max){
 
 
 function recommendPosts() {
+  console.log(document.getElementById("votes").value);
   var finalPosts=[];
   var parentNode = document.getElementById("recommendPosts");
   var child = document.getElementById("recommendedPosts");
@@ -98,13 +115,13 @@ function recommendPosts() {
         }
       }
       finalPosts = finalPosts.splice(0,20);
-      
+
       for(var i=0;i<finalPosts.length;i++){
         if(finalPosts[i]['views']>=numViews && finalPosts[i]['votes']>=numVotes){
             var p = document.createElement("p");
             div.appendChild(p);
             p.appendChild(document.createTextNode(i+" : "+finalPosts[i]["title"]));
-        } 
+        }
       }
       sortedPostsVotes = finalPosts.sort(function(a,b){
         return b['votes']-a['votes'];
@@ -112,7 +129,7 @@ function recommendPosts() {
       sortedPostsViews = finalPosts.sort(function(a,b){
         return b['views']-a['views'];
     });
-     
+
       modifyBar("votes",sortedPostsVotes[sortedPostsVotes.length-1]['votes'],sortedPostsVotes[0]['votes']);
       modifyBar("views",sortedPostsViews[sortedPostsViews.length-1]['views'],sortedPostsViews[0]['views']);
     }
@@ -133,12 +150,12 @@ function filterQuestions(questionWords,range){
                 }
             }
         }
-        
+
     }
     finalQuestion.sort(function(a,b){
         return b['votes']-a['votes'];
     });
-    
+
     //console.log(finalQuestion);
     return finalQuestion.splice(0,20);
 }
@@ -149,6 +166,7 @@ function init() {
   //Parse JSON string into object
   data = JSON.parse(response);
  });
+
 }
 
 init();
