@@ -1,3 +1,18 @@
 .tags {
   font-size: 0.8em;
 }
+/*
+input[type=range] {
+    -webkit-appearance: initial;
+    background-color: #eee;
+
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 300px;
+  height: 5px;
+  background-color: #DDD;
+  border: none;
+  border-radius: 3px;
+}
+*/

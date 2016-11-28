@@ -118,15 +118,17 @@ function recommendPosts() {
   if(question) {
       for(var i=question.length;i>0;i--){
         finalPosts = finalPosts.concat(filterQuestions(question,i));
-        if(finalPosts.length>20){
+        if(finalPosts.length>10){
             break;
         }
       }
-      finalPosts = finalPosts.splice(0,20);
+      finalPosts = finalPosts.splice(0,10);
 
        for(var i=0;i<finalPosts.length;i++){
         if(finalPosts[i]['views']>=numViews && finalPosts[i]['votes']>=numVotes){
             var p = document.createElement("p");
+            p.setAttribute("onmouseover","mouseOverPost(this)");
+            p.setAttribute("onmouseout","mouseOutPost()");
             div.appendChild(p);
             var a = document.createElement("a");
             a.setAttribute("target","_blank");
@@ -289,6 +291,30 @@ function mouseOutTag() {
     recommendedPosts.children[i].removeAttribute("style");
   }
 
+}
+
+function mouseOverPost(e) {
+  var target = e;
+  var tags = target.children[0].getAttribute("tags").split(",")
+
+  var svgContainer = document.getElementById("svg-container");
+
+  for(var i = 0; i<svgContainer.childElementCount; i++) {
+    if(!tags.includes(svgContainer.children[i].children[2].innerHTML)) {
+      console.log("Yo");
+      svgContainer.children[i].setAttribute("opacity",0.3);
+
+    }
+  }
+
+}
+
+function mouseOutPost() {
+  var svgContainer = document.getElementById("svg-container");
+
+  for(var i = 0; i<svgContainer.childElementCount; i++) {
+    svgContainer.children[i].removeAttribute("opacity");
+  }
 }
 
 init();
