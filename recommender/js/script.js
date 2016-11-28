@@ -128,7 +128,13 @@ function recommendPosts() {
         if(finalPosts[i]['views']>=numViews && finalPosts[i]['votes']>=numVotes){
             var p = document.createElement("p");
             div.appendChild(p);
-            p.appendChild(document.createTextNode(i+" : "+finalPosts[i]["title"]));
+            var a = document.createElement("a");
+            a.setAttribute("target","_blank");
+            a.setAttribute("style","text-decoration:none;");
+            a.setAttribute("tags",finalPosts[i]["tags"]);
+            p.appendChild(a).setAttribute("href",finalPosts[i]["link"]);
+
+            a.appendChild(document.createTextNode(i+" : "+finalPosts[i]["title"]));
             for(var j=0;j<finalPosts[i]['tags'].length;j++){
                 if(map[finalPosts[i]['tags'][j]]){
                     map[finalPosts[i]['tags'][j]]=map[finalPosts[i]['tags'][j]]+1;
@@ -169,12 +175,15 @@ function filterQuestions(questionWords,range){
         var dataQuestion = data[i]["title"];
         var count=0;
         for(var j=0;j<questionWords.length;j++){
-            if(dataQuestion.includes(questionWords[j])){
-                count++;
-                if(count>=range){
-                    finalQuestion.push(data[i]);
-                }
-            }
+          if(questionWords[j]=="r") {
+            questionWords[j] = questionWords[j].toUpperCase();
+          }
+          if(dataQuestion.includes(questionWords[j])){
+              count++;
+              if(count>=range){
+                  finalQuestion.push(data[i]);
+              }
+          }
         }
 
     }
@@ -204,7 +213,7 @@ function tagsBubbleChart() {
 
   var node = svgCanvas.selectAll(".node").data(bubble(nodes).descendants()).enter().filter(function(d) {
     return !d.children;
-  }).append("g").attr("class","node").attr("transform", function(d) {
+  }).append("g").attr("class","node").attr("onmouseover","mouseOverTag(this)").attr("onmouseout","mouseOutTag()").attr("transform", function(d) {
     return "translate("+d.x+","+d.y+")";
   });
 
@@ -230,6 +239,55 @@ function init() {
   //Parse JSON string into object
   data = JSON.parse(response);
  });
+
+}
+
+function mouseOverTag(e) {
+    var target = e;
+    var svgContainer = document.getElementById("svg-container");
+    for(var i = 0; i<svgContainer.childElementCount;i++) {
+      if(svgContainer.children[i]!=target) {
+        svgContainer.children[i].setAttribute("opacity",0.3);
+      }
+    }
+
+
+    var tagName = target.children[2].innerHTML;
+    var paragraphStyle = target.children[1].getAttribute("style");
+    paragraphStyle = paragraphStyle.replace("fill:","color:");
+    paragraphStyle += "text-decoration:none;font-weight:bold;";
+
+    var recommendedPosts = document.getElementById("recommendedPosts");
+
+    for(var i = 0; i<recommendedPosts.childElementCount; i++) {
+      tags = recommendedPosts.children[i].children[0].getAttribute("tags").split(",");
+
+      if(tags.includes(tagName)) {
+        recommendedPosts.children[i].children[0].setAttribute("style",paragraphStyle);
+      }
+      else {
+        recommendedPosts.children[i].setAttribute("style","opacity:0.3");
+      }
+    }
+
+}
+
+function mouseOutTag() {
+
+  var svgContainer = document.getElementById("svg-container");
+  for(var i = 0; i<svgContainer.childElementCount;i++) {
+
+    svgContainer.children[i].removeAttribute("opacity");
+
+  }
+
+  var recommendedPosts = document.getElementById("recommendedPosts");
+
+  for(var i = 0; i<recommendedPosts.childElementCount; i++) {
+
+    recommendedPosts.children[i].children[0].setAttribute("style","text-decoration:none;");
+    recommendedPosts.children[i].removeAttribute("style");
+  }
 
 }
 
