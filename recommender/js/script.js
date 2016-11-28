@@ -8,6 +8,9 @@ var data;
 
 var questionWords;
 var range;
+var map = {};
+var tagList=[];
+var tagDict={};
 
 function loadData(callback) {
 
@@ -93,7 +96,6 @@ function modifyBar(id,min,max){
 
 
 function recommendPosts() {
-  console.log(document.getElementById("votes").value);
   var finalPosts=[];
   var parentNode = document.getElementById("recommendPosts");
   var child = document.getElementById("recommendedPosts");
@@ -109,27 +111,43 @@ function recommendPosts() {
   if(question) {
       for(var i=question.length;i>0;i--){
         finalPosts = finalPosts.concat(filterQuestions(question,i));
-          console.log(finalPosts);
         if(finalPosts.length>20){
             break;
         }
       }
       finalPosts = finalPosts.splice(0,20);
 
-      for(var i=0;i<finalPosts.length;i++){
+       for(var i=0;i<finalPosts.length;i++){
         if(finalPosts[i]['views']>=numViews && finalPosts[i]['votes']>=numVotes){
             var p = document.createElement("p");
             div.appendChild(p);
             p.appendChild(document.createTextNode(i+" : "+finalPosts[i]["title"]));
-        }
+            for(var j=0;j<finalPosts[i]['tags'].length;j++){
+                if(map[finalPosts[i]['tags'][j]]){
+                    map[finalPosts[i]['tags'][j]]=map[finalPosts[i]['tags'][j]]+1;
+                }
+                else{
+                    map[finalPosts[i]['tags'][j]] = 1;
+                }
+            }
+        
+        } 
       }
+      
+      for(var key in map){
+          var temp ={};
+          temp["name"] = key;
+          temp["count"] = map[key];
+          tagList = tagList.concat(temp);
+          
+      }
+      tagDict["children"] = tagList;
       sortedPostsVotes = finalPosts.sort(function(a,b){
         return b['votes']-a['votes'];
     });
       sortedPostsViews = finalPosts.sort(function(a,b){
         return b['views']-a['views'];
     });
-
       modifyBar("votes",sortedPostsVotes[sortedPostsVotes.length-1]['votes'],sortedPostsVotes[0]['votes']);
       modifyBar("views",sortedPostsViews[sortedPostsViews.length-1]['views'],sortedPostsViews[0]['views']);
     }
@@ -155,8 +173,6 @@ function filterQuestions(questionWords,range){
     finalQuestion.sort(function(a,b){
         return b['votes']-a['votes'];
     });
-
-    //console.log(finalQuestion);
     return finalQuestion.splice(0,20);
 }
 
