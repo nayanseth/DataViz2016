@@ -126,6 +126,7 @@ function recommendPosts() {
 
        for(var i=0;i<finalPosts.length;i++){
         if(finalPosts[i]['views']>=numViews && finalPosts[i]['votes']>=numVotes){
+            
             var p = document.createElement("p");
             p.setAttribute("onmouseover","mouseOverPost(this)");
             p.setAttribute("onmouseout","mouseOutPost()");
@@ -148,7 +149,8 @@ function recommendPosts() {
 
         }
       }
-
+      
+      
       for(var key in map){
           var temp ={};
           temp["name"] = key;
@@ -157,12 +159,14 @@ function recommendPosts() {
 
       }
       tagDict["children"] = tagList;
-      sortedPostsVotes = finalPosts.sort(function(a,b){
+      var sortedPostsVotes=[];
+      sortedPostsVotes=sortedPostsVotes.concat(finalPosts.sort(function(a,b){
         return b['votes']-a['votes'];
-    });
-      sortedPostsViews = finalPosts.sort(function(a,b){
+    }));
+      var sortedPostsViews=[];
+      sortedPostsViews = sortedPostsViews.concat(finalPosts.sort(function(a,b){
         return b['views']-a['views'];
-    });
+    }));
       modifyBar("votes",sortedPostsVotes[sortedPostsVotes.length-1]['votes'],sortedPostsVotes[0]['votes']);
       modifyBar("views",sortedPostsViews[sortedPostsViews.length-1]['views'],sortedPostsViews[0]['views']);
     }
@@ -301,7 +305,6 @@ function mouseOverPost(e) {
 
   for(var i = 0; i<svgContainer.childElementCount; i++) {
     if(!tags.includes(svgContainer.children[i].children[2].innerHTML)) {
-      console.log("Yo");
       svgContainer.children[i].setAttribute("opacity",0.3);
 
     }
