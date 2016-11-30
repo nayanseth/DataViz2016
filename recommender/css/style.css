@@ -2,6 +2,10 @@
   font-size: 0.8em;
 }
 
+.recommended-posts {
+  font-size: 1.2em;
+}
+
 input[type=range] {
   -webkit-appearance: none;
   margin: 10px 0;
