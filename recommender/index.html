@@ -29,7 +29,7 @@
 
         <h3>Parameters</h3>
 
-        <form id="parameters">
+        <form id="parameters" style="margin-bottom:1em;">
           <span>
             <label id="votes-text">Votes</label>
             <input class="u-full-width" type="range" min="0" max="290" id="votes" onclick="OnChange('votes-text');" disabled="disabled">
@@ -41,13 +41,14 @@
           </span>
 
           <span>
-            <label id="answers-text">Answers</label>
-            <input class="u-full-width" type="range" id="answers" min="0" max="26" onclick="OnChange('answers-text');" disabled="disabled">
+            <!--<label id="answers-text">Answers</label>
+            <input class="u-full-width" type="range" id="answers" min="0" max="26" onclick="OnChange('answers-text');" disabled="disabled">-->
+              <button class="button-primary" style="margin-top:20px;" disabled="disabled" id="answers">ANSWER</button>
+              <button class="button-primary" style="margin-top:20px;" disabled="disabled" id="reputation">REPUTATION</button>
           </span>
         </form>
-
         <span>
-          <label>Tags</label>
+          <h3>Tags</h3>
           <div id="tag-canvas" class="tags">
           </div>
         </span>

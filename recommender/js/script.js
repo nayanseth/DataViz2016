@@ -34,11 +34,13 @@ function loadData(callback) {
 function resetParameters() {
   document.getElementById("votes-text").innerHTML = "Votes";
   document.getElementById("views-text").innerHTML = "Views";
-  document.getElementById("answers-text").innerHTML = "Answers";
+  //document.getElementById("answers-text").innerHTML = "Answers";
   document.getElementById("parameters").reset();
   document.getElementById("votes").removeAttribute("disabled");
   document.getElementById("views").removeAttribute("disabled");
   document.getElementById("answers").removeAttribute("disabled");
+  document.getElementById("reputation").removeAttribute("disabled");
+  //document.getElementById("answers").removeAttribute("disabled");
 
   numViews = 0, numVotes = 0, numAnswers = 0;
 
@@ -75,10 +77,10 @@ function OnChange(id) {
   } else if (id=="views-text") {
     numViews = document.getElementById("views").value;
     document.getElementById(id).innerHTML = "Views: " + document.getElementById("views").value;
-  } else {
+  } /*else {
     numAnswers = document.getElementById("answers").value;
     document.getElementById(id).innerHTML = "Answers: " + document.getElementById("answers").value;
-  }
+  }*/
 
   recommendPosts();
 }
@@ -122,6 +124,7 @@ function recommendPosts() {
             break;
         }
       }
+
       finalPosts = finalPosts.splice(0,10);
 
        for(var i=0;i<finalPosts.length;i++){
