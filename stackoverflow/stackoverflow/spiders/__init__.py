@@ -4,20 +4,31 @@
 # your spiders.
 
 import scrapy
+import json
 
+list=[]
 
 class StackOverFlowSpider(scrapy.Spider):
     name = "stackoverflow"
-
+    output = open("/Users/nayan/Desktop/dataNew.json","w")
     def start_requests(self):
-        urls = [
-            'http://stackoverflow.com/questions/tagged/r?sort=newest&pagesize=50',
-        ]
-        for url in urls:
-            yield scrapy.Request(url=url, callback=self.parse)
+
+        file = open("/Users/nayan/Desktop/data.json","r")
+        jsonData = json.load(file)
+        for value in jsonData:
+            yield scrapy.Request(url=value["link"], callback=self.parse)
+            print "YESSSSS"
+            print list
+            break
 
     def parse(self, response):
-        main = response.css("div.question-summary")
+        main = response.xpath('//div[@class="post-text"]/p/text()').extract_first().encode("ascii","ignore")
+        print main
+        list.append(main)
+        output.write(main + "\n")
+
+
+        '''
         finalData = [];
         data = {}
         i = 0;
@@ -42,6 +53,7 @@ class StackOverFlowSpider(scrapy.Spider):
             data["views"] = (int)(views);
             print data
             finalData.append(data);
+        '''
 
         #print finalData;
 
