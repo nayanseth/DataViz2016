@@ -22,7 +22,7 @@
   <body>
 
     <div class="twelve columns" style="margin:10px" id="container">
-      <input class="ten columns" type="text" placeholder="Question Likho" id="question">
+      <input class="ten columns" type="text" placeholder="Question" id="question">
       <input class="button-primary two columns" type="submit" id="submit-button" value="SEARCH" onclick="extractQuestion();">
 
       <div class="five columns" style="margin-left:0;">
@@ -39,14 +39,14 @@
             <label id="views-text">Views</label>
             <input class="u-full-width" type="range" min="0" max="264668" step="100" id="views" onclick="OnChange('views-text');" disabled="disabled">
           </span>
-
-          <span>
-            <!--<label id="answers-text">Answers</label>
-            <input class="u-full-width" type="range" id="answers" min="0" max="26" onclick="OnChange('answers-text');" disabled="disabled">-->
-              <button class="button-primary" style="margin-top:20px;" disabled="disabled" id="answers">ANSWER</button>
-              <button class="button-primary" style="margin-top:20px;" disabled="disabled" id="reputation">REPUTATION</button>
-          </span>
         </form>
+        <span>
+          <!--<label id="answers-text">Answers</label>
+          <input class="u-full-width" type="range" id="answers" min="0" max="26" onclick="OnChange('answers-text');" disabled="disabled">-->
+            <button class="button-primary" style="margin-top:0px;" disabled="disabled" id="answers" onclick="answerSort();">ANSWER</button>
+            <button class="button-primary" style="margin-top:0px;" disabled="disabled" id="reputation">REPUTATION</button>
+        </span>
+
         <span>
           <h3>Tags</h3>
           <div id="tag-canvas" class="tags">
@@ -56,7 +56,7 @@
       </div>
 
       <div class="seven columns" id ="recommendPosts">
-        <h3>Recommended Posts &#128077;</h3>
+        <h3 id = "recommendPostsTitle">Recommended Posts &#128077;</h3>
 
       </div>
     </div>
