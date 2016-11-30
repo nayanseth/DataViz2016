@@ -126,18 +126,19 @@ function recommendPosts() {
 
        for(var i=0;i<finalPosts.length;i++){
         if(finalPosts[i]['views']>=numViews && finalPosts[i]['votes']>=numVotes){
-            
+
             var p = document.createElement("p");
             p.setAttribute("onmouseover","mouseOverPost(this)");
             p.setAttribute("onmouseout","mouseOutPost()");
             div.appendChild(p);
             var a = document.createElement("a");
             a.setAttribute("target","_blank");
+            a.setAttribute("class","recommended-posts");
             a.setAttribute("style","text-decoration:none;");
             a.setAttribute("tags",finalPosts[i]["tags"]);
             p.appendChild(a).setAttribute("href",finalPosts[i]["link"]);
 
-            a.appendChild(document.createTextNode(i+" : "+finalPosts[i]["title"]));
+            a.appendChild(document.createTextNode(/*i+" : "+*/finalPosts[i]["title"]));
             for(var j=0;j<finalPosts[i]['tags'].length;j++){
                 if(map[finalPosts[i]['tags'][j]]){
                     map[finalPosts[i]['tags'][j]]=map[finalPosts[i]['tags'][j]]+1;
@@ -149,8 +150,8 @@ function recommendPosts() {
 
         }
       }
-      
-      
+
+
       for(var key in map){
           var temp ={};
           temp["name"] = key;
