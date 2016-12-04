@@ -41,7 +41,7 @@ function resetParameters() {
   document.getElementById("views").removeAttribute("disabled");
   document.getElementById("answers").removeAttribute("disabled");
   document.getElementById("reputation").removeAttribute("disabled");
-  document.getElementById("changeSkin").removeAttribute("disabled");
+  //document.getElementById("changeSkin").removeAttribute("disabled");
   //document.getElementById("answers").removeAttribute("disabled");
   document.getElementById("recommendPostsTitle").innerHTML = "Recommended Posts &#128077;";
   numViews = 0, numVotes = 0, numAnswers = 0;
