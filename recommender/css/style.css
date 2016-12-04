@@ -2,6 +2,21 @@
   font-size: 0.8em;
 }
 
+.recommended-posts:hover, .recommended-posts:focus {
+  color: cyan;
+}
+
+.bottomright {
+  position: fixed;
+  bottom: 0px;
+  right: 0px; 
+}
+
+#changeSkin {
+  background: #000;
+  color: #fff;
+}
+
 .recommended-posts {
   font-size: 1.2em;
 }

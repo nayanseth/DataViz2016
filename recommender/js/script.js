@@ -1,5 +1,6 @@
 numViews = 0, numVotes = 0, numAnswers = 0;
 answerFlag = false;
+reputationFlag = false;
 var stopwords = ["a", "about", "above", "above", "across", "after", "afterwards", "again", "against", "all", "almost", "alone", "along", "already", "also","although","always","am","among", "amongst", "amoungst", "amount",  "an", "and", "another", "any","anyhow","anyone","anything","anyway", "anywhere", "are", "around", "as",  "at", "back","be","became", "because","become","becomes", "becoming", "been", "before", "beforehand", "behind", "being", "below", "beside", "besides", "between", "beyond", "bill", "both", "bottom","but", "by", "call", "can", "cannot", "cant", "co", "con", "could", "couldnt", "cry", "de", "describe", "detail", "do", "done", "down", "due", "during", "each", "eg", "eight", "either", "eleven","else", "elsewhere", "empty", "enough", "etc", "even", "ever", "every", "everyone", "everything", "everywhere", "except", "few", "fifteen", "fify", "fill", "find", "fire", "first", "five", "for", "former", "formerly", "forty", "found", "four", "from", "front", "full", "further", "get", "give", "go", "had", "has", "hasnt", "have", "he", "hence", "her", "here", "hereafter", "hereby", "herein", "hereupon", "hers", "herself", "him", "himself", "his", "how", "however", "hundred", "ie", "if", "in", "inc", "indeed", "interest", "into", "is", "it", "its", "itself", "keep", "last", "latter", "latterly", "least", "less", "ltd", "made", "many", "may", "me", "meanwhile", "might", "mill", "mine", "more", "moreover", "most", "mostly", "move", "much", "must", "my", "myself", "name", "namely", "neither", "never", "nevertheless", "next", "nine", "no", "nobody", "none", "noone", "nor", "not", "nothing", "now", "nowhere", "of", "off", "often", "on", "once", "one", "only", "onto", "or", "other", "others", "otherwise", "our", "ours", "ourselves", "out", "over", "own","part", "per", "perhaps", "please", "put", "rather", "re", "same", "see", "seem", "seemed", "seeming", "seems", "serious", "several", "she", "should", "show", "side", "since", "sincere", "six", "sixty", "so", "some", "somehow", "someone", "something", "sometime", "sometimes", "somewhere", "still", "such", "system", "take", "ten", "than", "that", "the", "their", "them", "themselves", "then", "thence", "there", "thereafter", "thereby", "therefore", "therein", "thereupon", "these", "they", "thickv", "thin", "third", "this", "those", "though", "three", "through", "throughout", "thru", "thus", "to", "together", "too", "top", "toward", "towards", "twelve", "twenty", "two", "un", "under", "until", "up", "upon", "us", "very", "via", "was", "we", "well", "were", "what", "whatever", "when", "whence", "whenever", "where", "whereafter", "whereas", "whereby", "wherein", "whereupon", "wherever", "whether", "which", "while", "whither", "who", "whoever", "whole", "whom", "whose", "why", "will", "with", "within", "without", "would", "yet", "you", "your", "yours", "yourself", "yourselves", "the"];
 
 var request;
@@ -40,10 +41,12 @@ function resetParameters() {
   document.getElementById("views").removeAttribute("disabled");
   document.getElementById("answers").removeAttribute("disabled");
   document.getElementById("reputation").removeAttribute("disabled");
+  document.getElementById("changeSkin").removeAttribute("disabled");
   //document.getElementById("answers").removeAttribute("disabled");
   document.getElementById("recommendPostsTitle").innerHTML = "Recommended Posts &#128077;";
   numViews = 0, numVotes = 0, numAnswers = 0;
   answerFlag = false;
+  reputationFlag = false;
 }
 
 
@@ -84,6 +87,7 @@ function OnChange(id) {
     document.getElementById(id).innerHTML = "Answers: " + document.getElementById("answers").value;
   }*/
   answerFlag = false;
+  reputationFlag = false;
   recommendPosts();
 }
 
@@ -98,6 +102,13 @@ function modifyBar(id,min,max){
 
 function answerSort() {
   answerFlag = true;
+  document.getElementById("votes-text").innerHTML = "Votes";
+  document.getElementById("views-text").innerHTML = "Views";
+  recommendPosts();
+}
+
+function reputationSort() {
+  reputationFlag = true;
   document.getElementById("votes-text").innerHTML = "Votes";
   document.getElementById("views-text").innerHTML = "Views";
   recommendPosts();
@@ -137,7 +148,7 @@ function recommendPosts() {
       finalPosts = finalPosts.splice(0,10);
 
        for(var i=0;i<finalPosts.length;i++){
-        if(finalPosts[i]['views']>=numViews && finalPosts[i]['votes']>=numVotes && !answerFlag){
+        if(finalPosts[i]['views']>=numViews && finalPosts[i]['votes']>=numVotes && !answerFlag && !reputationFlag){
 
             var p = document.createElement("p");
             p.setAttribute("onmouseover","mouseOverPost(this)");
@@ -187,6 +198,36 @@ function recommendPosts() {
             }
             else{
                 map[sortedAnswers[i]['tags'][j]] = 1;
+            }
+        }
+
+      } else if(reputationFlag) {
+
+          document.getElementById("recommendPostsTitle").innerHTML = "Recommended Posts &#x2714;";
+          sortReputation = []
+          sortReputation=sortReputation.concat(finalPosts.sort(function(a,b){
+            return b['owner']['reputation']-a['owner']['reputation'];
+        }));
+
+
+        var p = document.createElement("p");
+        p.setAttribute("onmouseover","mouseOverPost(this)");
+        p.setAttribute("onmouseout","mouseOutPost()");
+        div.appendChild(p);
+        var a = document.createElement("a");
+        a.setAttribute("target","_blank");
+        a.setAttribute("class","recommended-posts");
+        a.setAttribute("style","text-decoration:none;");
+        a.setAttribute("tags",sortReputation[i]["tags"]);
+        p.appendChild(a).setAttribute("href",sortReputation[i]["link"]);
+
+        a.appendChild(document.createTextNode(/*i+" : "+*/sortReputation[i]["title"]));
+        for(var j=0;j<sortReputation[i]['tags'].length;j++){
+            if(map[sortReputation[i]['tags'][j]]){
+                map[sortReputation[i]['tags'][j]]=map[sortReputation[i]['tags'][j]]+1;
+            }
+            else{
+                map[sortReputation[i]['tags'][j]] = 1;
             }
         }
 
@@ -363,5 +404,46 @@ function mouseOutPost() {
     svgContainer.children[i].removeAttribute("opacity");
   }
 }
+
+function changeSkin() {
+
+  if(document.getElementById("changeSkin").innerHTML=="Dark") {
+    document.getElementById("changeSkin").innerHTML = "Light";
+
+    var child = document.getElementById("inpage-style");
+
+    var head = document.getElementsByTagName("head")[0];
+    if(child) {
+      head.removeChild(child);
+    }
+    var style = document.createElement("style");
+    head.appendChild(style);
+    style.setAttribute("id","inpage-style");
+    style.appendChild(document.createTextNode("a{color: white;};"));
+    document.getElementById("question").setAttribute("style","color:#000;")
+    document.getElementsByTagName("BODY")[0].setAttribute("style","background:#000;color:#fff;");
+
+    document.getElementById("changeSkin").setAttribute("style","background:floralwhite;color:#000;");
+
+  }
+  else {
+    document.getElementById("changeSkin").innerHTML = "Dark";
+    var child = document.getElementById("inpage-style");
+
+    var head = document.getElementsByTagName("head")[0];
+    if(child) {
+      head.removeChild(child);
+    }
+    var style = document.createElement("style");
+    head.appendChild(style);
+    style.setAttribute("id","inpage-style");
+    style.appendChild(document.createTextNode("a{color: #000;};"));
+    document.getElementById("question").setAttribute("style","color:#000;")
+    document.getElementsByTagName("BODY")[0].setAttribute("style","background:floralwhite;color:#000;");
+    document.getElementById("changeSkin").setAttribute("style","background:black;color:#fff;");
+  }
+
+
+ }
 
 init();
