@@ -350,7 +350,7 @@ function mouseOverTag(e) {
     }
 
 
-    var tagName = target.children[2].innerHTML;
+    var tagName = target.children[2].children[0].innerHTML;
     var paragraphStyle = target.children[1].getAttribute("style");
     paragraphStyle = paragraphStyle.replace("fill:","color:");
     paragraphStyle += "text-decoration:none;font-weight:bold;";
@@ -396,7 +396,7 @@ function mouseOverPost(e) {
   var svgContainer = document.getElementById("svg-container");
 
   for(var i = 0; i<svgContainer.childElementCount; i++) {
-    if(!tags.includes(svgContainer.children[i].children[2].innerHTML)) {
+    if(!tags.includes(svgContainer.children[i].children[2].children[0].innerHTML)) {
       svgContainer.children[i].setAttribute("opacity",0.3);
 
     }
